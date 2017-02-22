@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by dmitry tkachenko on 2/21/17.
@@ -14,25 +13,60 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Dmitry Tkachenko
  * @version 1.0
  */
-public class Board extends JFrame {
+class Board extends JFrame {
     private final int ROWS;
     private final int COLS;
     private final int COUNT;
+    private int clicks;
     private Tile tile;
     private JButton buttons[];
     private final char EMPTY = '*';
     private List numbers;
+    private StatusBar statusBar;
+    private int next;
+    private Thread statusBarThread;
+    private JMenuItem openItem;
 
 
-    public Board(int rows, int cols) {
-        ROWS = rows;
-        COLS = cols;
+    Board() {
+        ROWS = 3;
+        COLS = 3;
         COUNT = ROWS * COLS;
+        defaultSetup();
+
+        setup();
+        setupMenu();
+    }
+
+    private void defaultSetup() {
         this.tile = new Tile(new GridLayout(ROWS, COLS));
         this.buttons = new CustomButton[COUNT];
         this.numbers = fillList(COUNT);
+        clicks = COUNT;
+        next = 1;
+        statusBar = new StatusBar(new FlowLayout());
+    }
 
-        setup();
+    private void removeComponents() {
+        remove(tile);
+        remove(statusBar);
+    }
+
+    private void setupMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+
+        JMenu menu = new JMenu("File");
+        menuBar.add(menu);
+
+        openItem = new JMenuItem("New game");
+        menu.add(openItem);
+
+        openItem.addActionListener(e -> {
+            removeComponents();
+            defaultSetup();
+            setup();
+        });
     }
 
     private void setup() {
@@ -49,8 +83,12 @@ public class Board extends JFrame {
     }
 
     private void setupLayout() {
+
         setLayout(new BorderLayout());
+
         add(tile, BorderLayout.CENTER);
+        add(statusBar, BorderLayout.SOUTH);
+
     }
 
     private void initButtons() {
@@ -69,7 +107,7 @@ public class Board extends JFrame {
 
     private List<String> fillList(int count) {
         count++;
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         for (int i = 1; i < count; i++) {
             list.add(String.valueOf(i));
@@ -84,7 +122,16 @@ public class Board extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() instanceof JButton) {
                 JButton btn = (JButton) e.getSource();
-                btn.setText("X");
+                String nextStr = String.valueOf(next);
+                String textBtn = btn.getText();
+
+                if (nextStr.equals(textBtn) && !textBtn.equals("X")) {
+                    btn.setText("X");
+                    clicks--;
+                    next++;
+                }
+
+                if (clicks == 0) statusBar.stopThread();
             }
 
         }

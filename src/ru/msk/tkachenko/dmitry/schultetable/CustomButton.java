@@ -9,12 +9,13 @@ import java.awt.*;
  * @author Dmitry Tkachenko
  * @version 1.0
  */
-public class CustomButton extends JButton {
+class CustomButton extends JButton {
 
-    public CustomButton(String text) {
+    CustomButton(String text) {
         super(text);
-        setBackground(Color.BLACK);
-        setForeground(Color.WHITE);
+        setBackground(Color.WHITE);
+//        setBackground(Color.BLACK);
+//        setForeground(Color.WHITE);
         setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 11));
     }
 }

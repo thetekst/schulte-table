@@ -3,13 +3,11 @@ package ru.msk.tkachenko.dmitry.schultetable;
 import javax.swing.*;
 
 /**
- * Created by dmitry tkachenko on 2/21/17.
- *
  * @author Dmitry Tkachenko
- * @version 1.0
+ * @version 1.0 2/21/17
  */
 public class Main {
     public static void main(String[] args) {
-            SwingUtilities.invokeLater(() -> new Board(5, 5));
+        SwingUtilities.invokeLater(Board::new);
     }
 }
