@@ -44,7 +44,7 @@ class Board extends JFrame {
         this.numbers = fillList(COUNT);
         clicks = COUNT;
         next = 1;
-        statusBar = new StatusBar(new FlowLayout());
+        statusBar = new StatusBar(); // new FlowLayout()
     }
 
     private void removeComponents() {
@@ -129,6 +129,9 @@ class Board extends JFrame {
                     btn.setText("X");
                     clicks--;
                     next++;
+                } else {
+                    statusBar.increaseWrongClick();
+                    System.out.println("increase wrong click");
                 }
 
                 if (clicks == 0) statusBar.stopThread();

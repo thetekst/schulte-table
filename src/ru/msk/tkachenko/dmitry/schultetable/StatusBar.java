@@ -10,15 +10,20 @@ import java.awt.*;
 public class StatusBar extends JPanel implements Runnable {
     private Thread thread;
     private int sec;
-    private JLabel label;
+    private JLabel labelCounter;
+    private JLabel wrongClickLabel;
+    private int wrongClickingCounter;
     private boolean isContinue;
 
-    StatusBar(LayoutManager layout) {
-        super(layout);
+    StatusBar() { //LayoutManager layout
+        super(new BorderLayout());
 
         isContinue = true;
-        label = new JLabel(String.valueOf(sec));
-        add(label);
+        labelCounter = new JLabel(String.valueOf(sec));
+        wrongClickingCounter = 0;
+        wrongClickLabel = new JLabel(String.valueOf(wrongClickingCounter));
+        add(wrongClickLabel, BorderLayout.WEST);
+        add(labelCounter, BorderLayout.EAST);
         this.thread = new Thread(this, "threadname");
         thread.start();
     }
@@ -40,7 +45,7 @@ public class StatusBar extends JPanel implements Runnable {
 
                 labelStr = String.format("%d", sec);
                 if (sec < 10) labelStr = String.format("0%s", labelStr);
-                label.setText(labelStr);
+                labelCounter.setText(labelStr);
                 sec++;
                 Thread.sleep(1000);
 //                repaint();
@@ -58,5 +63,9 @@ public class StatusBar extends JPanel implements Runnable {
 
     void stopThread() {
         isContinue = false;
+    }
+
+    public void increaseWrongClick() {
+        wrongClickingCounter++;
     }
 }
