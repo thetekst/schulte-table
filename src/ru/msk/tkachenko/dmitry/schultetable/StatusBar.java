@@ -16,14 +16,17 @@ public class StatusBar extends JPanel implements Runnable {
     private boolean isContinue;
 
     StatusBar() { //LayoutManager layout
-        super(new BorderLayout());
+        super(new FlowLayout());
 
         isContinue = true;
         labelCounter = new JLabel(String.valueOf(sec));
         wrongClickingCounter = 0;
         wrongClickLabel = new JLabel(String.valueOf(wrongClickingCounter));
-        add(wrongClickLabel, BorderLayout.WEST);
-        add(labelCounter, BorderLayout.EAST);
+        add(new JLabel("wrong:"));
+        add(wrongClickLabel);
+        add(new JLabel("|"));
+        add(new JLabel("time:"));
+        add(labelCounter);
         this.thread = new Thread(this, "threadname");
         thread.start();
     }

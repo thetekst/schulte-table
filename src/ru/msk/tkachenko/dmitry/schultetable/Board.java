@@ -35,6 +35,7 @@ class Board extends JFrame {
         defaultSetup();
 
         setup();
+        setLocationRelativeTo(null);
         setupMenu();
     }
 
@@ -73,7 +74,7 @@ class Board extends JFrame {
         setTitle("Schulte Board");
         setResizable(false);
         setSize(new Dimension(250, 250));
-        setLocationRelativeTo(null);
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setupLayout();
@@ -120,6 +121,7 @@ class Board extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             if (e.getSource() instanceof JButton) {
                 JButton btn = (JButton) e.getSource();
                 String nextStr = String.valueOf(next);
@@ -134,9 +136,10 @@ class Board extends JFrame {
                     System.out.println("increase wrong click");
                 }
 
-                if (clicks == 0) statusBar.stopThread();
+                if (clicks == 0) {
+                    statusBar.stopThread();
+                }
             }
-
         }
     }
 }
